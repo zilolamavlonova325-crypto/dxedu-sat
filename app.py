@@ -1,4 +1,4 @@
-
+from flask import Response
 from flask import Flask, render_template, send_from_directory
 
 app = Flask(__name__)
@@ -16,6 +16,18 @@ def english():
     return render_template("english.html")
 @app.route("/sitemap.xml")
 def sitemap():
-    return send_from_directory(app.root_path, "sitemap.xml", mimetype="application/xml")
+    xml = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://dxedu-sat.onrender.com/</loc>
+    </url>
+    <url>
+        <loc>https://dxedu-sat.onrender.com/math</loc>
+    </url>
+    <url>
+        <loc>https://dxedu-sat.onrender.com/english</loc>
+    </url>
+</urlset>"""
+    return Response(xml, mimetype="application/xml")
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=False, use_reloader=False)
