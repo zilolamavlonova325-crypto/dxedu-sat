@@ -1,0 +1,694 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dxedu SAT Practice</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #080d1b;
+            color: #ffffff;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 250px;
+            background: #0d1427;
+            border-right: 1px solid #202b43;
+            padding: 28px 18px;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 45px;
+        }
+
+        .logo span {
+            color: #718cff;
+        }
+
+        .menu-title {
+            color: #77839e;
+            font-size: 11px;
+            letter-spacing: 2px;
+            margin: 25px 12px 12px;
+        }
+
+        .menu a {
+            display: block;
+            color: #aab5ce;
+            text-decoration: none;
+            padding: 13px 14px;
+            border-radius: 9px;
+            margin: 5px 0;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #202d50;
+            color: #ffffff;
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 30px 38px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            gap: 15px;
+        }
+
+        .welcome h1 {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #8996b2;
+            font-size: 14px;
+        }
+
+        .profile {
+            background: #17223b;
+            border: 1px solid #293957;
+            padding: 11px 17px;
+            border-radius: 12px;
+            color: #ffffff;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(120deg, #172d65, #35246f);
+            padding: 35px;
+            border-radius: 18px;
+            margin-bottom: 28px;
+            border: 1px solid #4054a0;
+        }
+
+        .hero small {
+            color: #b9c9ff;
+            letter-spacing: 2px;
+        }
+
+        .hero h2 {
+            font-size: 32px;
+            margin: 15px 0;
+        }
+
+        .hero p {
+            color: #d1dcff;
+            line-height: 1.6;
+            max-width: 520px;
+        }
+
+        .primary-btn {
+            display: inline-block;
+            margin-top: 22px;
+            background: #ffffff;
+            color: #18275a;
+            padding: 13px 22px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .primary-btn:hover {
+            background: #dce5ff;
+        }
+
+        /* STATISTICS */
+        .section-title {
+            font-size: 19px;
+            margin: 30px 0 17px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 17px;
+        }
+
+        .stat-card {
+            background: #111b31;
+            border: 1px solid #24324e;
+            border-radius: 14px;
+            padding: 23px;
+        }
+
+        .stat-card p {
+            color: #91a0bd;
+            font-size: 13px;
+            margin-bottom: 13px;
+        }
+
+        .stat-card h3 {
+            font-size: 27px;
+        }
+
+        .stat-card span {
+            color: #788cff;
+            font-size: 12px;
+        }
+
+        /* SUBJECTS */
+        .subjects {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .subject-card {
+            background: #111b31;
+            border: 1px solid #263653;
+            border-radius: 14px;
+            padding: 25px;
+            transition: 0.25s;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-4px);
+            border-color: #718cff;
+        }
+
+        .subject-icon {
+            font-size: 27px;
+            margin-bottom: 17px;
+        }
+
+        .subject-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .subject-card p {
+            color: #91a0bd;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .subject-card a {
+            display: inline-block;
+            color: #91aaff;
+            text-decoration: none;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        /* PRACTICE */
+        .practice {
+            background: #111b31;
+            border: 1px solid #263653;
+            border-radius: 14px;
+            padding: 25px;
+            margin-top: 28px;
+        }
+
+        .practice p {
+            color: #91a0bd;
+            margin-top: 9px;
+            font-size: 14px;
+        }
+
+        .practice a {
+            display: inline-block;
+            color: #ffffff;
+            background: #526ee8;
+            padding: 12px 19px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 18px;
+        }
+
+        footer {
+            text-align: center;
+            color: #697793;
+            font-size: 12px;
+            padding: 35px 0 10px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 800px) {
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                margin-left: 190px;
+                width: calc(100% - 190px);
+                padding: 22px 18px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                padding: 17px;
+                border-right: none;
+                border-bottom: 1px solid #202b43;
+            }
+
+            .logo {
+                margin-bottom: 15px;
+            }
+
+            .menu-title {
+                display: none;
+            }
+
+            .menu {
+                display: flex;
+                overflow-x: auto;
+                gap: 5px;
+            }
+
+            .menu a {
+                white-space: nowrap;
+                padding: 10px;
+                font-size: 12px;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 22px 16px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+            }
+
+            .welcome h1 {
+                font-size: 22px;
+            }
+
+            .profile {
+                font-size: 11px;
+            }
+
+            .hero {
+                padding: 24px;
+            }
+
+            .hero h2 {
+                font-size: 25px;
+            }
+
+            .subjects {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">DXEDU <span>SAT</span></div>
+
+        <div class="menu-title">MAIN MENU</div>
+
+        <nav class="menu">
+            <a href="#home" class="active">⌂ Home</a>
+            <a href="#dashboard">▦ Dashboard</a>
+            <a href="/math">∑ SAT Math</a>
+            <a href="/english">▤ Reading & Writing</a>
+            <a href="#practice">◷ Practice Test</a>
+            <a href="#results">▥ My Results</a>
+            <a href="#analytics">◈ Analytics</a>
+        </nav>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main" id="home">
+
+        <header class="topbar">
+            <div class="welcome">
+                <h1>Welcome to Dxedu SAT!</h1>
+                <p>Your journey to a higher SAT score starts here.</p>
+            </div>
+
+            <button class="profile" onclick="openProfile()">
+    👤 Student ▾
+</button>
+        </header>
+
+        <!-- HERO -->
+        <section class="hero">
+            <small>YOUR SAT PREPARATION PLATFORM</small>
+
+            <h2>Dream Big. Study Smart.<br>Score Higher.</h2>
+
+            <p>
+                Prepare for the Digital SAT with practice questions,
+                timed tests and detailed performance tracking.
+            </p>
+
+            <a href="#practice" class="primary-btn">
+                Start Practicing →
+            </a>
+        </section>
+
+        <!-- STATISTICS -->
+        <section id="dashboard">
+            <h2 class="section-title">Your Dashboard</h2>
+
+            <div class="stats">
+
+                <div class="stat-card">
+                    <p>Estimated SAT Math Score</p>
+<h3 id="mathScore">—</h3>
+<span id="mathStatus">Complete a practice test</span>
+                </div>
+<div class="stat-card">
+    <p>Questions Completed</p>
+    <h3 id="questionsCompleted">0</h3>
+    <span>Total questions answered</span>
+</div>
+
+                <div class="stat-card">
+    <p>Estimated SAT Reading & Writing Score</p>
+    <h3 id="englishScore">—</h3>
+    <span id="englishStatus">Complete an English test</span>
+</div>
+</div>
+        </section>
+
+        <!-- SUBJECTS -->
+        <h2 class="section-title">Study Sections</h2>
+
+        <section class="subjects">
+
+            <div class="subject-card" id="math">
+                <div class="subject-icon">∑</div>
+                <h3>SAT Math</h3>
+                <p>
+                    Master algebra, advanced math,
+                    problem solving and geometry.
+                </p>
+                <a href="/math">Start Math Practice→</a>
+            </div>
+
+            <div class="subject-card" id="reading">
+                <div class="subject-icon">📖</div>
+                <h3>Reading & Writing</h3>
+                <p>
+                    Improve reading comprehension,
+                    grammar and vocabulary skills.
+                </p>
+                <a href="/english">Explore Reading →</a>
+            </div>
+
+        </section>
+
+        <!-- PRACTICE TEST -->
+        <section class="practice" id="practice">
+            <h2>Ready for a Practice Test?</h2>
+            <p>
+                Test your knowledge and track your progress
+                with SAT-style practice.
+            </p>
+
+            <a 	href="/math">Start Math Test →</a>
+        </section>
+
+       <section id="results">
+    <h2 class="section-title">My Results</h2>
+
+    <div class="practice" id="myResults">
+        <p>Your completed test results will appear here.</p>
+    </div>
+</section>
+
+       
+<section id="analytics">
+    <h2 class="section-title">Analytics</h2>
+
+    <div class="practice">
+        <h3>Performance Overview</h3>
+        <p>Compare your SAT Math and Reading & Writing performance.</p>
+
+        <div style="display:flex; gap:30px; align-items:end;
+                    justify-content:center; height:260px;
+                    padding:25px 10px;">
+
+            <div style="text-align:center; flex:1;">
+                <h2 id="analyticsMath">0%</h2>
+                <div style="height:170px; display:flex;
+                            align-items:end; justify-content:center;">
+                    <div id="mathBar"
+                         style="width:65px; height:0%;
+                         background:#3b82f6; border-radius:10px 10px 0 0;">
+                    </div>
+                </div>
+                <p>Math</p>
+            </div>
+
+            <div style="text-align:center; flex:1;">
+                <h2 id="analyticsEnglish">0%</h2>
+                <div style="height:170px; display:flex;
+                            align-items:end; justify-content:center;">
+                    <div id="englishBar"
+                         style="width:65px; height:0%;
+                         background:#22c55e; border-radius:10px 10px 0 0;">
+                    </div>
+                </div>
+                <p>Reading & Writing</p>
+            </div>
+
+        </div>
+
+        <p style="text-align:center; color:#9ca3af;">
+            Your practice accuracy
+        </p>
+    </div>
+</section>
+
+
+        <footer>
+            © 2026 Dxedu SAT Practice. All rights reserved.
+        </footer>
+
+<div id="profileModal" style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.75);
+    z-index:999;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+">
+    <div style="
+        background:#111b31;
+        border:1px solid #293957;
+        border-radius:18px;
+        padding:28px;
+        width:100%;
+        max-width:430px;
+    ">
+        <h2 style="margin-bottom:20px;">👤 Student Profile</h2>
+
+        <label>Full Name</label>
+        <input id="studentName" type="text"
+            placeholder="Enter your name">
+
+        <label>Grade</label>
+        <input id="studentGrade" type="text"
+            placeholder="Example: Grade 11">
+
+        <label>Target SAT Score</label>
+        <input id="targetScore" type="number"
+            placeholder="Example: 1400">
+
+        <button onclick="saveProfile()" style="
+            width:100%;
+            padding:12px;
+            margin-top:18px;
+            background:#526ee8;
+            color:white;
+            border:0;
+            border-radius:9px;
+            cursor:pointer;
+        ">Save Profile</button>
+
+        <button onclick="closeProfile()" style="
+            width:100%;
+            padding:12px;
+            margin-top:10px;
+            background:#263653;
+            color:white;
+            border:0;
+            border-radius:9px;
+            cursor:pointer;
+        ">Close</button>
+    </div>
+</div>
+
+    </main>
+
+</div>
+
+<script>
+
+const savedScore = localStorage.getItem("dxeduMathScore");
+
+const completedQuestions = Number(
+    localStorage.getItem("dxeduQuestionsCompleted") || 0
+);
+
+const englishResults = JSON.parse(
+    localStorage.getItem("dxeduEnglishResults") || "[]"
+);
+
+const mathResults = JSON.parse(
+    localStorage.getItem("dxeduMathResults") || "[]"
+);
+
+// QUESTIONS COMPLETED
+document.getElementById("questionsCompleted").textContent =
+    completedQuestions;
+
+// ENGLISH SCORE
+if (englishResults.length > 0) {
+    const latestEnglish =
+        englishResults[englishResults.length - 1];
+
+    document.getElementById("englishScore").textContent =
+        latestEnglish.score + " / " + latestEnglish.total;
+
+    document.getElementById("englishStatus").textContent =
+        latestEnglish.percentage + "% · " + latestEnglish.date;
+}
+
+// MATH SCORE
+if (savedScore) {
+    document.getElementById("mathScore").textContent =
+        savedScore + " / 800";
+
+    document.getElementById("mathStatus").textContent =
+        "Latest Math practice result";
+}
+
+// MY RESULTS
+const allResults = [...mathResults, ...englishResults];
+
+const resultsBox = document.getElementById("myResults");
+
+if (allResults.length > 0) {
+    allResults.sort((a, b) =>
+        new Date(b.date) - new Date(a.date)
+    );
+
+    resultsBox.innerHTML = allResults.map(result => `
+        <div class="stat-card" style="margin-bottom:15px;">
+            <h3>${result.subject || "SAT Practice"}</h3>
+            <p>Score: ${result.score} / ${result.total}</p>
+            <p>Accuracy: ${result.percentage}%</p>
+            <p>Date: ${result.date}</p>
+        </div>
+    `).join("");
+}
+
+// ANALYTICS
+function getAverage(results) {
+    if (results.length === 0) return 0;
+
+    return Math.round(
+        results.reduce((sum, item) =>
+            sum + Number(item.percentage || 0), 0
+        ) / results.length
+    );
+}
+
+const mathAverage = getAverage(mathResults);
+const englishAverage = getAverage(englishResults);
+
+document.getElementById("analyticsMath").textContent =
+    mathAverage + "%";
+
+document.getElementById("analyticsEnglish").textContent =
+    englishAverage + "%";
+
+document.getElementById("mathBar").style.height =
+    (mathAverage * 1.7) + "px";
+
+document.getElementById("englishBar").style.height =
+    (englishAverage * 1.7) + "px";
+
+
+function openProfile() {
+    document.getElementById("profileModal").style.display = "flex";
+
+    document.getElementById("studentName").value =
+        localStorage.getItem("dxeduStudentName") || "";
+
+    document.getElementById("studentGrade").value =
+        localStorage.getItem("dxeduStudentGrade") || "";
+
+    document.getElementById("targetScore").value =
+        localStorage.getItem("dxeduTargetScore") || "";
+}
+
+function closeProfile() {
+    document.getElementById("profileModal").style.display = "none";
+}
+
+function saveProfile() {
+    const name = document.getElementById("studentName").value.trim();
+    const grade = document.getElementById("studentGrade").value.trim();
+    const target = document.getElementById("targetScore").value;
+
+    localStorage.setItem("dxeduStudentName", name);
+    localStorage.setItem("dxeduStudentGrade", grade);
+    localStorage.setItem("dxeduTargetScore", target);
+
+    document.querySelector(".profile").textContent =
+        "👤 " + (name || "Student") + " ▾";
+
+    closeProfile();
+}
+
+</script>
+
+</body>
+</html>

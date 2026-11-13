@@ -1,0 +1,515 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dxedu SAT - Reading and Writing</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 30px 15px;
+    font-family: Arial, sans-serif;
+    background: #080d1c;
+    color: white;
+}
+
+.container {
+    max-width: 850px;
+    margin: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+h1 { color: #60a5fa; }
+
+.card {
+    background: #151e32;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 25px;
+}
+
+.question {
+    font-size: 20px;
+    line-height: 1.6;
+    margin: 20px 0;
+}
+
+.option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 15px;
+    margin: 12px 0;
+    border: 1px solid #34445f;
+    border-radius: 10px;
+    background: #202d45;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.option:hover { background: #293d5e; }
+
+.option:disabled {
+    cursor: default;
+    opacity: 1;
+}
+
+.correct { border: 2px solid #22c55e; }
+.wrong { border: 2px solid #ef4444; }
+
+button.next {
+    background: #2563eb;
+    color: white;
+    padding: 13px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-size: 16px;
+}
+
+#feedback {
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+a { color: #60a5fa; text-decoration: none; }
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+    <h1>Dxedu SAT</h1>
+    <a href="/">← Home</a>
+</header>
+
+<div class="card">
+    <h2>SAT Reading and Writing</h2>
+    <p>Information and Ideas · Practice Test</p>
+
+    <div id="progress">Question 1 / 5</div>
+    <div id="question" class="question"></div>
+    <div id="options"></div>
+    <div id="feedback"></div>
+    <button class="next" id="next" onclick="nextQuestion()" hidden>
+        Next Question →
+    </button>
+</div>
+
+
+<div class="card" id="result" hidden>
+    <h2>Test Completed!</h2>
+
+    <h1 id="score"></h1>
+    <p id="message"></p>
+
+    <div id="resultDetails"></div>
+
+    <button class="next" onclick="saveResult()">
+        Save Result
+    </button>
+
+    <p id="saveStatus"></p>
+
+    <button class="next" onclick="restartTest()">
+        Try Again
+    </button>
+
+    <a href="/" style="display:block; margin-top:20px; color:#60a5fa;">
+        Return to Dashboard →
+    </a>
+</div>
+
+
+</div>
+
+<script>
+
+const questions = [
+{
+text: "Although the architect's early designs were criticized for their unconventional use of space, later architects praised them for anticipating principles that would become central to modern urban planning. Which choice best states the main idea?",
+options: [
+"The architect abandoned unconventional designs after receiving criticism.",
+"The architect's work gained recognition for ideas that later became influential.",
+"Modern urban planning developed independently of earlier architectural designs.",
+"Most architects initially supported the architect's approach."
+],
+answer: 1,
+explanation: "The passage contrasts early criticism with later recognition of the designs' influence."
+},
+{
+text: "Researchers studying coastal wetlands discovered that areas with greater plant diversity recovered more quickly after storms. However, the researchers cautioned that diversity alone did not determine recovery; soil composition and tidal patterns also played important roles. Which conclusion is best supported?",
+options: [
+"Plant diversity is the only factor affecting wetland recovery.",
+"Soil composition has no measurable effect on recovery.",
+"Greater plant diversity may contribute to recovery, alongside other environmental factors.",
+"Coastal wetlands with low plant diversity never recover after storms."
+],
+answer: 2,
+explanation: "The passage identifies plant diversity as one contributing factor while explicitly mentioning soil and tides."
+},
+{
+text: "The historian describes two accounts of the same historical event. One was written by a government official, while the other was recorded in private letters by local residents. Why does the historian include both accounts?",
+options: [
+"To demonstrate that written records are always unreliable.",
+"To compare different perspectives on the same event.",
+"To prove that government officials intentionally falsified all records.",
+"To show that private letters contain more information than official documents."
+],
+answer: 1,
+explanation: "Presenting both accounts allows readers to compare perspectives without claiming either is automatically more reliable."
+},
+{
+text: "In a study of memory, participants who organized information into meaningful groups recalled more items than participants who reviewed the same information without organizing it. Which statement best describes the study's findings?",
+options: [
+"Organizing information may improve recall.",
+"Reviewing information always reduces memory.",
+"Meaningful groups prevent people from forgetting everything.",
+"Participants recalled fewer items when information was organized."
+],
+answer: 0,
+explanation: "The comparison supports the idea that grouping information can improve memory performance."
+},
+{
+text: "The word 'tenuous' most nearly means in the following sentence: The connection between the two historical events was tenuous, relying on only a small number of indirect references.",
+options: [
+"Obvious",
+"Strong",
+"Uncertain or weak",
+"Permanent"
+],
+answer: 2,
+explanation: "The limited and indirect evidence makes the connection weak or uncertain."
+},
+{
+text: "A botanist argues that a rare plant species is more adaptable than previously believed. Which finding would most directly support this claim?",
+options: [
+"The plant grows only in one protected greenhouse.",
+"The plant survives in several environments with different temperatures and soil conditions.",
+"The plant produces fewer seeds than related species.",
+"The plant has been studied by fewer researchers than common species."
+],
+answer: 1,
+explanation: "Survival in varied environments directly demonstrates adaptability."
+},
+{
+text: "An author notes that an early transportation system was expensive to construct but eventually reduced the cost of moving goods across long distances. Which choice best describes the author's perspective?",
+options: [
+"The initial expense made the system permanently unsuccessful.",
+"The system's long-term benefits may have justified its initial cost.",
+"The system was unnecessary because goods could already be transported.",
+"The system increased transportation costs in every situation."
+],
+answer: 1,
+explanation: "The contrast between high construction costs and later savings suggests that long-term benefits justified the investment."
+},
+{
+text: "A study found that students who slept between seven and nine hours generally performed better on a memory task than those who slept fewer than six hours. The researchers did not control for every factor that might influence performance. Which statement is most accurate?",
+options: [
+"The study proves that sleep duration is the only cause of memory performance.",
+"The findings suggest an association between sleep duration and memory performance, but do not establish causation.",
+"Students who sleep fewer than six hours cannot remember information.",
+"The researchers demonstrated that memory is unrelated to sleep."
+],
+answer: 1,
+explanation: "An observed association does not establish that sleep duration alone caused the difference."
+},
+{
+text: "The word 'mitigate' most nearly means in the following sentence: The city planted trees to mitigate the effects of extreme summer heat.",
+options: [
+"Intensify",
+"Measure",
+"Reduce",
+"Predict"
+],
+answer: 2,
+explanation: "To mitigate means to make something less severe or harmful."
+},
+{
+text: "A researcher compares two methods of restoring damaged forests. Method A produces faster initial growth, while Method B produces greater biodiversity after ten years. Which conclusion is best supported?",
+options: [
+"Method A is superior in every respect.",
+"Method B may provide greater long-term ecological benefits.",
+"Both methods produce identical results.",
+"Initial growth is the only meaningful measure of restoration."
+],
+answer: 1,
+explanation: "Greater biodiversity after ten years suggests a possible long-term advantage for Method B."
+},
+{
+text: "A novelist deliberately presents the same event through the perspectives of three different characters. What is the most likely effect of this technique?",
+options: [
+"It guarantees that every character is equally reliable.",
+"It reveals how individual perspectives can shape interpretations of events.",
+"It prevents readers from understanding the central conflict.",
+"It establishes that only one character's account is accurate."
+],
+answer: 1,
+explanation: "Different viewpoints show that people can interpret the same event differently."
+},
+{
+text: "A university library introduced a digital archive. In the first year, visits to the physical archive decreased, but the number of researchers accessing historical documents increased substantially. Which statement best captures the relationship?",
+options: [
+"The digital archive reduced access to historical documents.",
+"The digital archive may have expanded access despite reducing physical visits.",
+"Researchers stopped using historical documents.",
+"Physical archives became more popular after digitization."
+],
+answer: 1,
+explanation: "The increase in total researchers suggests that digital access broadened availability even as physical visits declined."
+},
+{
+text: "The word 'ambiguous' most nearly means in the following sentence: The instructions were ambiguous, so different employees interpreted them in different ways.",
+options: [
+"Clear and precise",
+"Open to multiple interpretations",
+"Extremely detailed",
+"Scientifically accurate"
+],
+answer: 1,
+explanation: "Ambiguous instructions are unclear and can be interpreted in more than one way."
+},
+{
+text: "A scientist proposes that a particular bird species migrates earlier when autumn temperatures are unusually warm. Which evidence would most strongly support the proposal?",
+options: [
+"Records showing that the birds have similar body sizes each year.",
+"Observations showing earlier migration in years with unusually warm autumns.",
+"Evidence that other bird species migrate at different times.",
+"Reports that the birds prefer nesting in forests."
+],
+answer: 1,
+explanation: "The evidence directly links warmer autumns with earlier migration, matching the proposal."
+},
+{
+text: "A report states that a city's new bicycle lanes were followed by an increase in bicycle commuting. However, the city also introduced a public cycling campaign during the same period. What is the main limitation of the report?",
+options: [
+"It does not establish which change contributed to the increase, if either did.",
+"It proves that bicycle lanes discourage commuting.",
+"It demonstrates that public campaigns have no influence.",
+"It shows that bicycle commuting cannot be measured."
+],
+answer: 0,
+explanation: "Because two changes occurred together, the report cannot isolate the effect of the bicycle lanes."
+},
+{
+text: "An art historian argues that an artist's later paintings were not a rejection of the artist's earlier style, but rather an expansion of it. Which finding would best support this argument?",
+options: [
+"The later paintings preserve several compositional techniques used in the earlier works while introducing new materials.",
+"The artist destroyed all earlier paintings.",
+"The later paintings were created by a different artist.",
+"The artist publicly stated that the earlier works were worthless."
+],
+answer: 0,
+explanation: "Preserving earlier techniques while adding new elements supports the idea of development rather than rejection."
+},
+{
+text: "The word 'scrutinize' most nearly means in the following sentence: Before approving the proposal, the committee decided to scrutinize the financial projections.",
+options: [
+"Ignore completely",
+"Examine carefully",
+"Rewrite creatively",
+"Publish immediately"
+],
+answer: 1,
+explanation: "To scrutinize means to examine something very carefully."
+},
+{
+text: "Researchers studying a new agricultural technique found that it increased crop yields in dry regions but produced little improvement in areas with abundant rainfall. Which statement best expresses the implication?",
+options: [
+"The technique is equally effective in every climate.",
+"The technique's effectiveness may depend on local environmental conditions.",
+"The technique should never be used in dry regions.",
+"Rainfall has no relationship to crop production."
+],
+answer: 1,
+explanation: "The contrasting results indicate that environmental conditions influence the technique's effectiveness."
+},
+{
+text: "A museum curator argues that restoring an ancient painting should preserve evidence of its age rather than make it appear completely new. Which principle most directly supports this position?",
+options: [
+"Historical authenticity can be more important than visual perfection.",
+"All damaged artworks should be replaced.",
+"Modern materials always improve historical accuracy.",
+"Visitors prefer paintings without visible signs of age."
+],
+answer: 0,
+explanation: "The curator prioritizes preserving historical evidence over creating a flawless appearance."
+},
+{
+text: "A researcher observes that cities with extensive public transportation systems tend to have lower average car ownership. However, wealth, population density, and local policies differ among the cities studied. Which conclusion is most defensible?",
+options: [
+"Public transportation alone determines car ownership in every city.",
+"Lower car ownership proves that public transportation is ineffective.",
+"The observed relationship may be influenced by several factors beyond transportation availability.",
+"Population density and local policies cannot affect car ownership."
+],
+answer: 2,
+explanation: "The passage identifies several possible confounding factors, so a simple causal conclusion would be unjustified."
+}
+];
+
+
+let current = 0;
+let answerHistory = [];
+let score = 0;
+let answered = false;
+
+function loadQuestion() {
+    answered = false;
+    const q = questions[current];
+
+    document.getElementById("progress").textContent =
+        `Question ${current + 1} / ${questions.length}`;
+
+    document.getElementById("question").textContent = q.text;
+    document.getElementById("feedback").textContent = "";
+    document.getElementById("next").hidden = true;
+
+    const options = document.getElementById("options");
+    options.innerHTML = "";
+
+    q.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.className = "option";
+        button.textContent = String.fromCharCode(65 + index) + ". " + option;
+        button.onclick = () => checkAnswer(index);
+        options.appendChild(button);
+    });
+}
+
+function checkAnswer(selected) {
+    if (answered) return;
+    answered = true;
+
+    const q = questions[current];
+    const buttons = document.querySelectorAll(".option");
+
+    buttons.forEach((button, index) => {
+        button.disabled = true;
+        if (index === q.answer) button.classList.add("correct");
+        if (index === selected && selected !== q.answer) {
+            button.classList.add("wrong");
+        }
+    });
+    answerHistory.push({
+    question: q.text,
+    selected: selected,
+    correctAnswer: q.answer,
+    isCorrect: selected === q.answer
+});
+
+    if (selected === q.answer) {
+        score++;
+        document.getElementById("feedback").innerHTML =
+            "✓ Correct answer!<br>" + q.explanation;
+    } else {
+        document.getElementById("feedback").innerHTML =
+            "✗ Incorrect answer.<br>Correct answer: " +
+            String.fromCharCode(65 + q.answer) + "<br>" +
+            q.explanation;
+    }
+
+    document.getElementById("next").hidden = false;
+}
+
+function nextQuestion() {
+    current++;
+
+    if (current < questions.length) {
+        loadQuestion();
+    } else {
+    document.querySelector(".card").hidden = true;
+    document.getElementById("result").hidden = false;
+
+    const total = questions.length;
+    const percentage = Math.round(score / total * 100);
+
+    const estimatedSATScore = Math.round(
+        200 + (score / total) * 600
+    );
+
+    document.getElementById("score").textContent =
+        "Estimated SAT Score: " + estimatedSATScore;
+
+    document.getElementById("message").textContent =
+        "Your accuracy: " + percentage + "%";
+
+    document.getElementById("resultDetails").innerHTML = `
+        <h2>Estimated SAT Reading & Writing Score</h2>
+        <h1>${estimatedSATScore} / 800</h1>
+        <p>Correct Answers: ${score} / ${total}</p>
+        <p>Incorrect Answers: ${total - score}</p>
+    `;
+}
+}
+
+function restartTest() {
+    current = 0;
+    answerHistory = [];
+    score = 0;
+    document.querySelector(".card").hidden = false;
+    document.getElementById("result").hidden = true;
+    loadQuestion();
+}
+
+function saveResult() {
+    const percentage = Math.round(score / questions.length * 100);
+
+    const estimatedSATScore = Math.round(
+        200 + (score / questions.length) * 600
+    );
+
+    const result = {
+        subject: "SAT Reading and Writing",
+        score: estimatedSATScore,
+        total: 800,
+        rawScore: score,
+        percentage: percentage,
+        correct: score,
+        incorrect: questions.length - score,
+        date: new Date().toLocaleString()
+    };
+
+    let results = JSON.parse(
+        localStorage.getItem("dxeduEnglishResults") || "[]"
+    );
+
+    results.push(result);
+
+    localStorage.setItem(
+        "dxeduEnglishResults",
+        JSON.stringify(results)
+    );
+    let completed = Number(
+    localStorage.getItem("dxeduQuestionsCompleted") || 0
+);
+
+completed += questions.length;
+
+localStorage.setItem(
+    "dxeduQuestionsCompleted",
+    completed
+);
+
+    document.getElementById("saveStatus").textContent =
+        "✓ Estimated SAT Score saved successfully!";
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
